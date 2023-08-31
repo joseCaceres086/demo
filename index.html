@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Mapa</title>
+    <!-- Include Leaflet CSS and JavaScript files -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        /* Set the map container's height */
+        #map {
+            height: calc(100vh - 200px);
+        }
+
+        /* Style for the filter buttons */
+        .filter-buttons {
+            margin-top: 10px;
+			margin-bottom: 100px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Create a map container -->
+    <div id="map"></div>
+
+    <!-- Filter buttons -->
+    <div class="filter-buttons">
+        <button id="showAll">Mostrar todos</button>
+        <button id="filter1">Filtro 1</button>
+        <button id="filter2">Filtro 2</button>
+        <button id="filter3">Filtro 3</button>
+        <button id="clearMap">Limpiar mapa</button>
+    </div>
+
+    <script>
+        var map = L.map('map').setView([-34.61, -58.38], 12); // Buenos Aires, Argentina
+        var markers = [];
+
+        // Add a tile layer from OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Function to add markers at specific coordinates with popups
+        function addMarkersWithPopups(coordinates) {
+            for (var i = 0; i < coordinates.length; i++) {
+                var marker = L.marker(coordinates[i]).addTo(map);
+                marker.bindPopup('Ejemplo ' + (i + 1) + '<br>Calle ' + String.fromCharCode(65 + i) + '<br>Teléfono: 123-456-' + (i + 1));
+                markers.push(marker);
+            }
+        }
+
+        // Function to remove all markers from the map
+        function removeMarkers() {
+            for (var i = 0; i < markers.length; i++) {
+                map.removeLayer(markers[i]);
+            }
+            markers = [];
+        }
+
+        // Filter buttons event listeners
+        document.getElementById('showAll').addEventListener('click', function () {
+            removeMarkers();
+            // Add all markers
+            addMarkersWithPopups([
+                [ -34.6037389, -58.3815704], [-34.6002389, -58.3835704],
+                [ -34.6097389, -58.3755704], [-34.6112389, -58.3725704],
+                [ -34.6177389, -58.3885704], [-34.6142389, -58.3875704]
+            ]);
+        });
+
+        document.getElementById('filter1').addEventListener('click', function () {
+            removeMarkers();
+            addMarkersWithPopups([[ -34.6037389, -58.3815704], [-34.6002389, -58.3835704]]);
+        });
+
+        document.getElementById('filter2').addEventListener('click', function () {
+            removeMarkers();
+            addMarkersWithPopups([[ -34.6097389, -58.3755704], [-34.6112389, -58.3725704]]);
+        });
+
+        document.getElementById('filter3').addEventListener('click', function () {
+            removeMarkers();
+            addMarkersWithPopups([[ -34.6177389, -58.3885704], [-34.6142389, -58.3875704]]);
+        });
+
+        document.getElementById('clearMap').addEventListener('click', function () {
+            removeMarkers();
+        });
+
+		addMarkersWithPopups([
+                [ -34.6037389, -58.3815704], [-34.6002389, -58.3835704],
+                [ -34.6097389, -58.3755704], [-34.6112389, -58.3725704],
+                [ -34.6177389, -58.3885704], [-34.6142389, -58.3875704]
+            ]);
+    </script>
+</body>
+</html>
